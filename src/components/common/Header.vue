@@ -11,13 +11,7 @@
     <!-- 系统logo -->
     <div class="logo">DataClub</div>
 
-    <div class="header-left">
-      <el-input placeholder="请输入内容" v-model="searchValue">
-        <i slot="prefix" class="el-input__icon el-icon-search"></i>
-      </el-input>
-    </div>
-    <div class="dataframe">数据集分享</div>
-    <div class="about">关于</div>
+    
 
     <!-- 头部组件右边功能区 -->
     <div class="header-right">
@@ -170,21 +164,6 @@ export default {
   height: 70px;
   font-size: 22px;
   color: #fff;
-}
-.header-left {
-  float: left;
-  line-height: 70px;
-}
-.dataframe {
-  margin-left: 20px;
-  margin-right: 20px;
-  float: left;
-  line-height: 70px;
-}
-.about {
-  margin-right: 20px;
-  float: left;
-  line-height: 70px;
 }
 .collapse-btn {
   float: left;
