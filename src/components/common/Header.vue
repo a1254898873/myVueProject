@@ -86,7 +86,7 @@ export default {
   computed: {
     username() {
       // 从本地存储中获取值
-      let username = localStorage.getItem("ms_username");
+      let username = sessionStorage.getItem("ms_username");
       // 对获取到的值进行判断，如果从本地存储能够获取到值，则使用该值，如果不能获取到，则使用 data 中设置的值
       return username ? username : this.name;
     }
@@ -98,7 +98,7 @@ export default {
       //退出登录事件
       if (command == "loginout") {
         // 从本地存储中删除用户名
-        localStorage.removeItem("ms_username");
+        sessionStorage.removeItem("ms_username");
         // 跳转到登录页面
         this.$router.push("/login");
       }

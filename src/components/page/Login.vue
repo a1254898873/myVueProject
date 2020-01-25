@@ -40,22 +40,18 @@ export default {
     submitClick: function() {
       var _this = this;
       this.loading = true;
-      postRequest("/login", {
+      postRequest("/userlogin", {
         username: this.loginForm.username,
         password: this.loginForm.password
       }).then(resp => {
         _this.loading = false;
         if (resp && resp.status == 200) {
-          this.$message.success("登录成功");
+          
           var data = resp.data;
           // _this.$store.commit('login', data.obj);
-          localStorage.setItem("ms_username", data.obj);
+          sessionStorage.setItem("ms_username", data.obj);
           this.$router.push("/");
-        } else {
-          this.$message.error("登录失败");
-
-          
-        }
+        } 
       });
     }
   }

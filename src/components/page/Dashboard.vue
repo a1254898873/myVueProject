@@ -140,7 +140,7 @@
         data() {
             return {
                 // 从本地存储获取用户名
-                name: localStorage.getItem('ms_username'),
+                name: sessionStorage.getItem('ms_username'),
                 // 待办事项卡片模拟数据
                 todoList: [{
                         title: '今天要修复100个bug',
