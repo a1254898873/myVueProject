@@ -19,6 +19,8 @@ import './utils/directives';
 //加载语法编辑器
 import 'babel-polyfill';
 
+
+
 Vue.config.productionTip = false;
 //引入国际化插件
 Vue.use(VueI18n);

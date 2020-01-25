@@ -1,109 +1,88 @@
 <template>
-<!-- 登录组件 -->
-    <div class="login-wrap">
-        <div class="ms-login">
-            <div class="ms-title">后台管理系统</div>
-            <!-- model：表单数据对象，rules：表单验证规则，ref：给元素或子组件注册引用信息 -->
-            <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
-                <!-- 用户名表单 -->
-                <el-form-item prop="username">
-                    <el-input v-model="param.username" placeholder="username">
-                        <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
-                    </el-input>
-                </el-form-item>
-                <!-- 密码表单 -->
-                <el-form-item prop="password">
-                    <el-input
-                        type="password"
-                        placeholder="password"
-                        v-model="param.password"
-                        @keyup.enter.native="submitForm()"
-                    ><!--  .native - 主要是给自定义的组件添加原生事件 -->
-                        <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
-                    </el-input>
-                </el-form-item>
-                <div class="login-btn">
-                    <el-button type="primary" @click="submitForm()">登录</el-button>
-                </div>
-                <p class="login-tips">Tips : 用户名和密码随便填。</p>
-            </el-form>
-        </div>
-    </div>
+  <el-form
+    :rules="rules"
+    class="login-container"
+    label-position="left"
+    label-width="0px"
+    v-loading="loading"
+  >
+    <h3 class="login_title">系统登录</h3>
+    <el-form-item prop="account">
+      <el-input type="text" v-model="loginForm.username" auto-complete="off" placeholder="账号"></el-input>
+    </el-form-item>
+    <el-form-item prop="checkPass">
+      <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="密码"></el-input>
+    </el-form-item>
+    <el-checkbox class="login_remember" v-model="checked" label-position="left">记住密码</el-checkbox>
+    <el-form-item style="width: 100%">
+      <el-button type="primary" style="width: 100%" @click="submitClick">登录</el-button>
+    </el-form-item>
+  </el-form>
 </template>
-
 <script>
+import { postRequest } from '../../api/api.js';
 export default {
-    data: function() {
-        return {
-            param: {
-                username: 'AsunaCC',
-                password: '123123',
-            },
-            rules: {
-                username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-                password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-            },
-        };
-    },
-    methods: {
-        submitForm() {
-            // 获取ref注册的引用信息
-            this.$refs.login.validate(valid => {
-                if (valid) {
-                    this.$message.success('登录成功');
-                    localStorage.setItem('ms_username', this.param.username);
-                    this.$router.push('/');
-                } else {
-                    this.$message.error('请输入账号和密码');
-                    console.log('error submit!!');
-                    return false;
-                }
-            });
-        },
-    },
+  data() {
+    return {
+      rules: {
+        account: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+        checkPass: [{ required: true, message: "请输入密码", trigger: "blur" }]
+      },
+      checked: true,
+      loginForm: {
+        username: "admin",
+        password: "123"
+      },
+      loading: false
+    };
+  },
+  methods: {
+    submitClick: function() {
+      var _this = this;
+      this.loading = true;
+      postRequest("/login", {
+        username: this.loginForm.username,
+        password: this.loginForm.password
+      }).then(resp => {
+        _this.loading = false;
+        if (resp && resp.status == 200) {
+          this.$message.success("登录成功");
+          var data = resp.data;
+          // _this.$store.commit('login', data.obj);
+          localStorage.setItem("ms_username", data.obj);
+          this.$router.push("/");
+        } else {
+          this.$message.error("登录失败");
+
+          
+        }
+      });
+    }
+  }
 };
 </script>
-
-<style scoped>
-.login-wrap {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-image: url(../../assets/img/login-bg.jpg);
-    background-size: 100%;
+<style>
+.login-container {
+  border-radius: 15px;
+  background-clip: padding-box;
+  margin: 180px auto;
+  width: 350px;
+  padding: 35px 35px 15px 35px;
+  background: #fff;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 0 25px #cac6c6;
 }
-.ms-title {
-    width: 100%;
-    line-height: 50px;
-    text-align: center;
-    font-size: 20px;
-    color: #fff;
-    border-bottom: 1px solid #ddd;
+.login_title {
+  margin: 0px auto 40px auto;
+  text-align: center;
+  color: #505458;
 }
-.ms-login {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 350px;
-    margin: -190px 0 0 -175px;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.3);
-    overflow: hidden;
-}
-.ms-content {
-    padding: 30px 30px;
-}
-.login-btn {
-    text-align: center;
-}
-.login-btn button {
-    width: 100%;
-    height: 36px;
-    margin-bottom: 10px;
-}
-.login-tips {
-    font-size: 12px;
-    line-height: 30px;
-    color: #fff;
+.login_remember {
+  margin: 0px 0px 35px 0px;
+  text-align: left;
 }
 </style>
+
+
+
+
