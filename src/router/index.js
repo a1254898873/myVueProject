@@ -87,6 +87,11 @@ export default new Router({
                     path: '403',
                     component: () => import('../components/page/403.vue'),
                     meta: { title: '403' }
+                },
+                {
+                    path: '/dataframeinfo/:id',
+                    component: () => import('../components/page/DataFrameInfo.vue'),
+                    meta: { title: '数据集' }
                 }
             ]
         },

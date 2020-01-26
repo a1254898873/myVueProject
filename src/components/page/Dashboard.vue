@@ -94,7 +94,7 @@
             <el-button style="float: right; padding: 3px 0" type="text">添加</el-button>
           </div>
           <el-table
-            :data="todoList"
+            :data="dataFrame"
             :show-header="false"
             height="304"
             style="width: 100%;font-size:14px;"
@@ -104,10 +104,8 @@
             <el-table-column>
               <template v-slot="scope">
                 <!-- 这个插槽放置data中的title属性值 -->
-                <div
-                  class="todo-item"
-                  :class="{'todo-item-del': scope.row.status}"
-                >{{scope.row.title}}</div>
+                <router-link :to="{path:'/dataframeinfo/'+scope.row.id }"><div class="todo-item">{{scope.row.projectName}}</div></router-link>
+                
               </template>
             </el-table-column>
             <el-table-column width="60">
@@ -165,34 +163,10 @@ export default {
     return {
       // 从本地存储获取用户名
       userDetail: null,
+      dataFrame: null,
       name: sessionStorage.getItem("ms_username"),
       // 待办事项卡片模拟数据
-      todoList: [
-        {
-          title: "今天要修复100个bug",
-          status: false
-        },
-        {
-          title: "今天要修复100个bug",
-          status: false
-        },
-        {
-          title: "今天要写100行代码加几个bug吧",
-          status: false
-        },
-        {
-          title: "今天要修复100个bug",
-          status: false
-        },
-        {
-          title: "今天要修复100个bug",
-          status: true
-        },
-        {
-          title: "今天要写100行代码加几个bug吧",
-          status: true
-        }
-      ],
+      
       // 图表公用模拟数据
       data: [
         {
@@ -258,6 +232,7 @@ export default {
     this.handleListener();
     this.changeDate();
     this.getUserInfo();
+    this.getDataFrame();
   },
   // activated,deactivated这两个生命周期函数一定是要在使用了keep-alive组件后才会有的
   // 在vue对象存活的情况下，进入当前存在activated()函数的页面时，一进入页面就触发
@@ -276,7 +251,13 @@ export default {
       getRequest("/userInfo").then(resp => {
         var data = resp.data;
         this.userDetail = data.obj;
-        console.log(this.userDetail);
+      });
+    },
+    getDataFrame: function() {
+      getRequest("/dataframes").then(resp => {
+        var data = resp.data;
+        this.dataFrame = data.obj;
+        console.log(this.dataFrame)
       });
     },
     changeDate() {
