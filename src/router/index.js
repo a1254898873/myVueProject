@@ -89,9 +89,14 @@ export default new Router({
                     meta: { title: '403' }
                 },
                 {
-                    path: '/dataframeinfo/:id',
+                    path: '/dataframeinfo',
                     component: () => import('../components/page/DataFrameInfo.vue'),
                     meta: { title: '数据集' }
+                },
+                {
+                    path: '/adddataframe',
+                    component: () => import('../components/page/AddDataFrame.vue'),
+                    meta: { title: '添加数据集' }
                 }
             ]
         },

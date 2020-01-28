@@ -21,6 +21,7 @@
 </template>
 <script>
 import { postRequest } from '../../api/api.js';
+import {Message} from 'element-ui'
 export default {
   data() {
     return {
@@ -46,7 +47,7 @@ export default {
       }).then(resp => {
         _this.loading = false;
         if (resp && resp.status == 200) {
-          
+          Message.success({message: '登录成功!'});
           var data = resp.data;
           // _this.$store.commit('login', data.obj);
           sessionStorage.setItem("ms_username", data.obj);

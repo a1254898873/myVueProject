@@ -54,6 +54,7 @@
             <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
               <el-dropdown-item>项目仓库</el-dropdown-item>
             </a>
+            <router-link to="/adddataframe"><el-dropdown-item >添加数据集</el-dropdown-item></router-link>
             <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -64,6 +65,7 @@
 <script>
 // 加载bus实现组件通信
 import bus from "../../utils/bus";
+import { getRequest } from "../../api/api.js";
 
 export default {
   data() {
@@ -93,6 +95,7 @@ export default {
       if (command == "loginout") {
         // 从本地存储中删除用户名
         sessionStorage.removeItem("ms_username");
+        getRequest("/logout");
         // 跳转到登录页面
         this.$router.push("/login");
       }

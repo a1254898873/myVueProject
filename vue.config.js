@@ -9,5 +9,5 @@ module.exports = {
 
     lintOnSave: false,
 
-    outputDir: 'D:\\dataclub1\\src\\main\\resources\\static'
+    outputDir: 'D:\\springboot\\MySpringBoot\\src\\main\\resources\\static'
 }

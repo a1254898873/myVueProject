@@ -26,8 +26,8 @@ export default {
   data() {
     return {
       activeName: "second",
-      id:null,
-      dataframeinfo:null
+      id: null,
+      dataframeinfo: null
     };
   },
   methods: {
@@ -38,23 +38,21 @@ export default {
       console.log(val);
     },
     getDataFrame: function() {
-      getRequest("/dataframe?id="+this.id).then(resp => {
+      getRequest("/dataframe?id=" + this.id).then(resp => {
         var data = resp.data;
         this.dataframeinfo = data.obj;
       });
     }
-
   },
   created() {
     //获取传入的参数
-    // var param = this.$route.query;
-     var param = this.$route.params;
+    var param = this.$route.query;
+    //  var param = this.$route.params;
     this.id = param.id;
     this.getDataFrame();
-    
+
     //如果使用query方式传入的参数使用this.$route.query 接收
     //如果使用params方式传入的参数使用this.$router.params接收
-    
   }
 };
 </script>

@@ -91,7 +91,9 @@
         <el-card shadow="hover" style="height:403px;">
           <div slot="header" class="clearfix">
             <span>我的数据集</span>
-            <el-button style="float: right; padding: 3px 0" type="text">添加</el-button>
+            <router-link to="/adddataframe">
+              <el-button style="float: right; padding: 3px 0" type="text">添加</el-button>
+            </router-link>
           </div>
           <el-table
             :data="dataFrame"
@@ -104,8 +106,9 @@
             <el-table-column>
               <template v-slot="scope">
                 <!-- 这个插槽放置data中的title属性值 -->
-                <router-link :to="{path:'/dataframeinfo/'+scope.row.id }"><div class="todo-item">{{scope.row.projectName}}</div></router-link>
-                
+                <router-link :to="{path:'/dataframeinfo?id='+scope.row.id }">
+                  <div class="todo-item">{{scope.row.projectName}}</div>
+                </router-link>
               </template>
             </el-table-column>
             <el-table-column width="60">
@@ -166,7 +169,7 @@ export default {
       dataFrame: null,
       name: sessionStorage.getItem("ms_username"),
       // 待办事项卡片模拟数据
-      
+
       // 图表公用模拟数据
       data: [
         {
@@ -257,7 +260,7 @@ export default {
       getRequest("/dataframes").then(resp => {
         var data = resp.data;
         this.dataFrame = data.obj;
-        console.log(this.dataFrame)
+        
       });
     },
     changeDate() {

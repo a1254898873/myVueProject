@@ -7,7 +7,7 @@
         <v-sidebar></v-sidebar>
         <div class="content-box" :class="{'content-collapse':collapse}">
             <!-- 标签栏组件 -->
-            <v-tags></v-tags>
+            <!-- <v-tags></v-tags> -->
             <div class="content">
                 <transition name="move" mode="out-in">
                     <!-- keep-alive是Vue的内置组件，能在组件切换过程中将状态保留在内存中
