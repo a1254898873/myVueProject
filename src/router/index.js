@@ -106,6 +106,11 @@ export default new Router({
             meta: { title: 'Login' }
         },
         {
+            path: '/register',
+            component: () => import('../components/page/Register.vue'),
+            meta: { title: 'Register' }
+        },
+        {
             path: '*',
             redirect: '/404'
         }
