@@ -6,7 +6,7 @@
       <el-input v-model="form.username"></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="password">
-      <el-input v-model="form.password"></el-input>
+      <el-input type="password" v-model="form.password"></el-input>
     </el-form-item>
 
     <el-form-item>
@@ -22,13 +22,13 @@ export default {
   data() {
     return {
       form: {
-        username: "",
-        password: ""
+        username: "111",
+        password: "111"
       },
       rules: {
         username: [
-          { required: true, message: "请输入用户名称", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+          { required: true, message: "请输入用户名称", trigger: "blur" }
+          
         ],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }]
       }
@@ -38,10 +38,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          var _this = this;
-          this.loading = true;
           postRequest("/userlogin", this.form).then(resp => {
-            _this.loading = false;
             if (resp && resp.status == 200) {
               Message.success({ message: "登录成功!" });
               var data = resp.data;
