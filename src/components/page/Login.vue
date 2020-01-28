@@ -1,68 +1,69 @@
 <template>
-  <el-form
-    :rules="rules"
-    class="login-container"
-    label-position="left"
-    label-width="0px"
-    v-loading="loading"
-  >
-    <h3 class="login_title">系统登录</h3>
+  <el-form ref="form" :model="form" label-width="80px" class="container" :rules="rules">
+    <h3 class="register_title">系统登录</h3>
     <el-divider></el-divider>
-    <el-form-item prop="account">
-      <el-input type="text" v-model="loginForm.username" auto-complete="off" placeholder="账号"></el-input>
+    <el-form-item label="用户名" prop="username">
+      <el-input v-model="form.username"></el-input>
     </el-form-item>
-    <el-form-item prop="checkPass">
-      <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="密码"></el-input>
+    <el-form-item label="密码" prop="password">
+      <el-input v-model="form.password"></el-input>
     </el-form-item>
+
     <el-form-item>
-    <div class="register">没有账号？<router-link :to="{path:'/register' }" >点击注册</router-link>><div>
-      </el-form-item>
-    <el-form-item style="width: 100%">
-      <el-button type="primary" style="width: 100%" @click="submitClick">登录</el-button>
+      <el-button type="primary" @click="submitForm('form')">立即登录</el-button>
+      <el-button @click="resetForm('form')">重置</el-button>
     </el-form-item>
   </el-form>
 </template>
 <script>
-import { postRequest } from '../../api/api.js';
-import {Message} from 'element-ui'
+import { postRequest } from "../../api/api.js";
+import { Message } from "element-ui";
 export default {
   data() {
     return {
+      form: {
+        username: "",
+        password: ""
+      },
       rules: {
-        account: [{ required: true, message: "请输入用户名", trigger: "blur" }],
-        checkPass: [{ required: true, message: "请输入密码", trigger: "blur" }]
-      },
-      checked: true,
-      loginForm: {
-        username: "111",
-        password: "111"
-      },
-      loading: false
+        username: [
+          { required: true, message: "请输入用户名称", trigger: "blur" },
+          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+        ],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }]
+      }
     };
   },
   methods: {
-    submitClick: function() {
-      var _this = this;
-      this.loading = true;
-      postRequest("/userlogin", {
-        username: this.loginForm.username,
-        password: this.loginForm.password
-      }).then(resp => {
-        _this.loading = false;
-        if (resp && resp.status == 200) {
-          Message.success({message: '登录成功!'});
-          var data = resp.data;
-          // _this.$store.commit('login', data.obj);
-          sessionStorage.setItem("ms_username", data.obj);
-          this.$router.push("/");
-        } 
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          var _this = this;
+          this.loading = true;
+          postRequest("/userlogin", this.form).then(resp => {
+            _this.loading = false;
+            if (resp && resp.status == 200) {
+              Message.success({ message: "登录成功!" });
+              var data = resp.data;
+              // _this.$store.commit('login', data.obj);
+              sessionStorage.setItem("ms_username", data.obj);
+              this.$router.push("/");
+            }
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
       });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     }
   }
 };
 </script>
-<style>
-.login-container {
+<style scoped>
+.container {
   border-radius: 15px;
   background-clip: padding-box;
   margin: 180px auto;
@@ -72,17 +73,31 @@ export default {
   border: 1px solid #eaeaea;
   box-shadow: 0 0 25px #cac6c6;
 }
-.login_title {
+.register_title {
   margin: 0px auto 40px auto;
   text-align: center;
   color: #505458;
 }
-.login_remember {
-  margin: 0px 0px 35px 0px;
-  text-align: left;
-}
-
 </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

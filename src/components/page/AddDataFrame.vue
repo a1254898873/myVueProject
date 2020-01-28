@@ -16,8 +16,8 @@
         <el-input v-model="form.fileUrl"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitClick">立即创建</el-button>
-        <el-button>取消</el-button>
+        <el-button type="primary" @click="submitForm('form')">立即创建</el-button>
+        <el-button @click="resetForm('form')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -47,14 +47,23 @@ export default {
     };
   },
   methods: {
-    submitClick: function() {
-      console.log(111);
-      postRequest("/dataframe", this.form).then(resp => {
-        if (resp && resp.status == 200) {
-          Message.success({ message: "创建成功!" });
-          this.$router.push("/");
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          postRequest("/dataframe", this.form).then(resp => {
+            if (resp && resp.status == 200) {
+              Message.success({ message: "创建成功!" });
+              this.$router.push("/");
+            }
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
         }
       });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     }
   }
 };
