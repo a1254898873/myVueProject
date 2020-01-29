@@ -16,12 +16,24 @@
 
             <span style="float: right; padding: 3px 0" type="text">
               <el-tag class="tagInfo">作者:{{item.createBy}}</el-tag>
+              <el-tag class="tagInfo">数据集协议:{{item.licence}}</el-tag>
               <el-tag class="tagInfo" type="success">创建时间:{{utc2beijing(item.createAt)}}</el-tag>
             </span>
           </div>
           <div>{{item.overview}}</div>
         </el-card>
       </router-link>
+      <div class="pagination">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="cur_page"
+          :page-sizes="[1, 2, 3, 4]"
+          :page-size="pageNum"
+          layout="total,sizes,  prev, pager, next, jumper"
+          :total="totalCount"
+        ></el-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -30,45 +42,47 @@ import { getRequest } from "../../api/api.js";
 export default {
   data() {
     return {
-      dataFrames: null
+      dataFrames: null,
+      cur_page: 1, //默认在第一页
+
+      pageNum: 10, //默认每页显示1条数据
+
+      totalCount: 10 //默认总条数为一条
     };
   },
   created() {
     this.getDataFrame();
+    this.getTotal();
   },
   methods: {
+    handleCurrentChange(val) {
+      this.cur_page = val;
+      this.getDataFrame(); //获取用户点击的当前页后刷新页面数据
+    },
+    handleSizeChange(val) {
+      this.pageNum = val;
+      this.getDataFrame(); //根据用户获取的每页显示页面数量显示页面
+    },
+    getTotal: function() {
+      getRequest("page/total?page=" + this.cur_page + "&size=" + this.pageNum).then(
+        resp => {
+          var data = resp.data;
+          this.totalCount = data.obj;
+          console.log(this.totalCount);
+        }
+      );
+    },
     getDataFrame: function() {
-      getRequest("/alldataframes?page=0&size=5").then(resp => {
-        var data = resp.data;
-        this.dataFrames = data.obj;
-        console.log(this.dataFrames);
-      });
+      getRequest("page/dataframes?page=" + this.cur_page + "&size=" + this.pageNum).then(
+        resp => {
+          var data = resp.data;
+          this.dataFrames = data.obj;
+          console.log(this.dataFrames);
+        }
+      );
     },
     utc2beijing: function(utc_datetime) {
-      // 转为正常的时间格式 年-月-日 时:分:秒
-      var T_pos = utc_datetime.indexOf("T");
-      var Z_pos = utc_datetime.indexOf("Z");
-      var year_month_day = utc_datetime.substr(0, T_pos);
-      var hour_minute_second = utc_datetime.substr(
-        T_pos + 1,
-        Z_pos - T_pos - 1
-      );
-      var new_datetime = year_month_day + " " + hour_minute_second; // 2017-03-31 08:02:06
-
-      // 处理成为时间戳
-      timestamp = new Date(Date.parse(new_datetime));
-      timestamp = timestamp.getTime();
-      timestamp = timestamp / 1000;
-
-      // 增加8个小时，北京时间比utc时间多八个时区
-      var timestamp = timestamp + 8 * 60 * 60;
-
-      // 时间戳转为时间
-      var beijing_datetime = new Date(parseInt(timestamp) * 1000)
-        .toLocaleString()
-        .replace(/年|月/g, "-")
-        .replace(/日/g, " ");
-      return beijing_datetime; // 2017-03-31 16:02:06
+      return (new Date(utc_datetime)).toLocaleString();
     }
   }
 };
@@ -80,7 +94,7 @@ export default {
 .tagInfo {
   margin-left: 10px;
 }
-.title h3{
+.title h3 {
   margin: 0px auto 40px auto;
   text-align: center;
   color: #505458;

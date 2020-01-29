@@ -20,6 +20,7 @@ Form 组件提供了表单验证的功能，只需要通过 rule 属性传入约
           <el-form-item label="来源" prop="fileUrl">
             <el-input v-model="infoForm.fileUrl"></el-input>
           </el-form-item>
+
           <!--使用编辑器
           -->
 
@@ -34,6 +35,16 @@ Form 组件提供了表单验证的功能，只需要通过 rule 属性传入约
                 @ready="onEditorReady($event)"
               ></quill-editor>
             </div>
+          </el-form-item>
+
+          <el-form-item label="协议" prop="licence">
+            <el-select v-model="infoForm.licence" placeholder="请选择数据集协议">
+              <el-option label="公共领域（CC0）" value="公共领域（CC0）"></el-option>
+              <el-option label="署名（CC-BY 4.0）" value="署名（CC-BY 4.0）"></el-option>
+              <el-option label="署名-相同方式共享（CC-BY-SA 4.0）" value="署名-相同方式共享（CC-BY-SA 4.0）"></el-option>
+              <el-option label="署名-非商业性使用（CC-BY-NC）" value="署名-非商业性使用（CC-BY-NC）"></el-option>
+              <el-option label="署名-禁止演绎（CC-BY-ND）" value="署名-禁止演绎（CC-BY-ND）"></el-option>
+            </el-select>
           </el-form-item>
 
           <el-form-item>
@@ -59,7 +70,8 @@ export default {
         projectName: "",
         fileUrl: "",
         overview: "",
-        state: ""
+        state: "",
+        licence: ""
       },
       //表单验证
       rules: {
@@ -68,7 +80,8 @@ export default {
         ],
         overview: [{ required: true, message: "请输入概述", trigger: "blur" }],
         fileUrl: [{ required: true, message: "请输入来源", trigger: "blur" }],
-        state: [{ required: true, message: "请输入说明", trigger: "blur" }]
+        state: [{ required: true, message: "请输入说明", trigger: "blur" }],
+        licence: [{ required: true, message: "请选择协议", trigger: "blur" }]
       }
     };
   },
@@ -116,7 +129,7 @@ export default {
 .edit_container {
   margin-top: 10px;
 }
-.title h3{
+.title h3 {
   margin: 0px auto 40px auto;
   text-align: center;
   color: #505458;
