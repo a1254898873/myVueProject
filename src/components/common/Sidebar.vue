@@ -94,6 +94,11 @@
                     title: '系统首页'
                 },
                 {
+                    icon: 'el-icon-s-marketing',
+                    index: 'listdataframe',
+                    title: '公共数据集'
+                },
+                {
                     icon: 'el-icon-lx-cascades',
                     index: 'table',
                     title: '基础表格'

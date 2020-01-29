@@ -97,6 +97,11 @@ export default new Router({
                     path: '/adddataframe',
                     component: () => import('../components/page/AddDataFrame.vue'),
                     meta: { title: '添加数据集' }
+                },
+                {
+                    path: 'listdataframe',
+                    component: () => import('../components/page/ListDataFrame.vue'),
+                    meta: { title: '浏览数据集' }
                 }
                 
             ]

@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+    <div class="title">
+      <h3>添加数据集</h3>
+      <el-divider></el-divider>
+    </div>
     <el-row class="warp">
       <!--
 Form 组件提供了表单验证的功能，只需要通过 rule 属性传入约定的验证规则，并 Form-Item 的 prop 属性设置为需校验的字段名即可。具体可以参考官网：http://element.eleme.io/#/zh-CN/component/form
@@ -18,8 +22,9 @@ Form 组件提供了表单验证的功能，只需要通过 rule 属性传入约
           </el-form-item>
           <!--使用编辑器
           -->
-          
-          <el-form-item prop="state" label="说明">>
+
+          <el-form-item prop="state" label="说明">
+            >
             <div class="edit_container">
               <quill-editor
                 v-model="infoForm.state"
@@ -108,7 +113,12 @@ export default {
   width: 90%;
   margin: auto;
 }
-.edit_container{
+.edit_container {
   margin-top: 10px;
+}
+.title h3{
+  margin: 0px auto 40px auto;
+  text-align: center;
+  color: #505458;
 }
 </style>
