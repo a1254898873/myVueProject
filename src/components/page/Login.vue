@@ -8,7 +8,10 @@
     <el-form-item label="密码" prop="password">
       <el-input type="password" v-model="form.password"></el-input>
     </el-form-item>
-
+    <el-form-item  prop="password">
+      没有账号？
+      <router-link :to="{path:'/register' }">点击注册</router-link>
+    </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm('form')">立即登录</el-button>
       <el-button @click="resetForm('form')">重置</el-button>
@@ -28,7 +31,6 @@ export default {
       rules: {
         username: [
           { required: true, message: "请输入用户名称", trigger: "blur" }
-          
         ],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }]
       }

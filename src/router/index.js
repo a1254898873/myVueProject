@@ -98,6 +98,7 @@ export default new Router({
                     component: () => import('../components/page/AddDataFrame.vue'),
                     meta: { title: '添加数据集' }
                 }
+                
             ]
         },
         {

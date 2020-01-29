@@ -5,11 +5,11 @@
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="概述" name="first">
         <el-collapse @change="handleChange">
-          <el-collapse-item title="背景" name="1">
-            <div>{{dataframeinfo.background}}</div>
+          <el-collapse-item title="概述" name="1">
+            <div>{{dataframeinfo.overview}}</div>
           </el-collapse-item>
           <el-collapse-item title="说明" name="2">
-            <div>{{dataframeinfo.state}}</div>
+            <div v-html="dataframeinfo.state"></div>
           </el-collapse-item>
           <el-collapse-item title="来源" name="3">
             <div>{{dataframeinfo.fileUrl}}</div>
