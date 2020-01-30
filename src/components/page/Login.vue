@@ -44,8 +44,10 @@ export default {
             if (resp && resp.status == 200) {
               Message.success({ message: "登录成功!" });
               var data = resp.data;
+              var user = data.obj;
               // _this.$store.commit('login', data.obj);
-              sessionStorage.setItem("ms_username", data.obj);
+              sessionStorage.setItem("ms_username", user.username);
+              sessionStorage.setItem("ms_id", user.id);
               this.$router.push("/");
             }
           });

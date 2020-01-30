@@ -10,7 +10,7 @@
         <el-card shadow="hover" class="mgb20" style="height:520px;">
           <div class="user-info">
             <!-- 用户头像 -->
-            <img src="../../assets/img/img.jpg" class="user-avator" alt />
+            <img :src="avatar" class="user-avator" alt />
             <div class="user-info-cont">
               <!-- 用户名 -->
               <div class="user-info-name">{{name}}</div>
@@ -167,6 +167,7 @@ export default {
       // 从本地存储获取用户名
       userDetail: null,
       dataFrame: null,
+      avatar:null,
       name: sessionStorage.getItem("ms_username"),
       // 待办事项卡片模拟数据
 
@@ -254,7 +255,9 @@ export default {
       getRequest("/userInfo").then(resp => {
         var data = resp.data;
         this.userDetail = data.obj;
+        this.avatar = "/avatar/"+this.userDetail.id+".jpg";
       });
+      
     },
     getDataFrame: function() {
       getRequest("/dataframes").then(resp => {

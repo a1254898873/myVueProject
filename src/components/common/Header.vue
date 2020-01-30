@@ -11,8 +11,6 @@
     <!-- 系统logo -->
     <div class="logo">DataClub</div>
 
-    
-
     <!-- 头部组件右边功能区 -->
     <div class="header-right">
       <div class="header-user-con">
@@ -39,7 +37,7 @@
 
         <!-- 用户头像 -->
         <div class="user-avator">
-          <img src="../../assets/img/img.jpg" />
+          <img :src="avatar" />
         </div>
 
         <!-- 用户名下拉菜单：trigger属性配置 click 激活
@@ -54,7 +52,12 @@
             <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
               <el-dropdown-item>项目仓库</el-dropdown-item>
             </a>
-            <router-link to="/adddataframe"><el-dropdown-item >添加数据集</el-dropdown-item></router-link>
+            <router-link to="/editprofile">
+              <el-dropdown-item divided>修改个人资料</el-dropdown-item>
+            </router-link>
+            <router-link to="/adddataframe">
+              <el-dropdown-item divided>添加数据集</el-dropdown-item>
+            </router-link>
             <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -74,7 +77,8 @@ export default {
       fullscreen: false,
       name: "AsunaCC",
       message: 2,
-      searchValue: ""
+      searchValue: "",
+      avatar: ""
     };
   },
 
@@ -83,18 +87,24 @@ export default {
     username() {
       // 从本地存储中获取值
       let username = sessionStorage.getItem("ms_username");
+
       // 对获取到的值进行判断，如果从本地存储能够获取到值，则使用该值，如果不能获取到，则使用 data 中设置的值
       return username ? username : this.name;
     }
   },
 
   methods: {
+    getAvatar() {
+      var id = sessionStorage.getItem("ms_id");
+      this.avatar = "/avatar/" + id + ".jpg";
+    },
     // 用户名下拉菜单选择事件
     handleCommand(command) {
       //退出登录事件
       if (command == "loginout") {
         // 从本地存储中删除用户名
         sessionStorage.removeItem("ms_username");
+        sessionStorage.removeItem("ms_id");
         getRequest("/logout");
         // 跳转到登录页面
         this.$router.push("/login");
@@ -153,6 +163,9 @@ export default {
     bus.$on("msg", e => {
       this.message = e;
     });
+  },
+  created() {
+    this.getAvatar();
   }
 };
 </script>

@@ -102,6 +102,11 @@ export default new Router({
                     path: 'listdataframe',
                     component: () => import('../components/page/ListDataFrame.vue'),
                     meta: { title: '浏览数据集' }
+                },
+                {
+                    path: '/editprofile',
+                    component: () => import('../components/page/EditProfile.vue'),
+                    meta: { title: '头像' }
                 }
                 
             ]
