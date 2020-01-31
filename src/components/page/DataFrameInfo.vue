@@ -3,18 +3,27 @@
     <h3>{{dataframeinfo.projectName}}</h3>
     <el-divider></el-divider>
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="概述" name="first">
-        <el-collapse @change="handleChange">
-          <el-collapse-item title="概述" name="1">
-            <div>{{dataframeinfo.overview}}</div>
-          </el-collapse-item>
-          <el-collapse-item title="说明" name="2">
-            <div v-html="dataframeinfo.state"></div>
-          </el-collapse-item>
-          <el-collapse-item title="来源" name="3">
-            <div>{{dataframeinfo.fileUrl}}</div>
-          </el-collapse-item>
-        </el-collapse>
+      <el-tab-pane label="概述" name="first" v-model="currentActive">
+        <el-card shadow="hover">
+          <div slot="header" class="clearfix">
+            <el-tag>概述</el-tag>
+          </div>
+          <div>{{dataframeinfo.overview}}</div>
+        </el-card>
+
+        <el-card shadow="hover">
+          <div slot="header" class="clearfix">
+            <el-tag >说明</el-tag>
+          </div>
+          <div v-html="dataframeinfo.state"></div>
+        </el-card>
+
+        <el-card shadow="hover">
+          <div slot="header" class="clearfix">
+            <el-tag >来源</el-tag>
+          </div>
+          <div>{{dataframeinfo.fileUrl}}</div>
+        </el-card>
       </el-tab-pane>
       <el-tab-pane label="评论" name="second">配置管理</el-tab-pane>
     </el-tabs>
@@ -25,7 +34,7 @@ import { getRequest } from "../../api/api.js";
 export default {
   data() {
     return {
-      activeName: "second",
+      activeName: "first",
       id: null,
       dataframeinfo: null
     };
@@ -62,6 +71,4 @@ export default {
   width: 90%;
   margin: auto;
 }
-
-
 </style>
