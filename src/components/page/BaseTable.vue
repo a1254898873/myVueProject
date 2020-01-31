@@ -173,7 +173,7 @@ export default {
             })
                 .then(() => {
                     this.$message.success('删除成功');
-                    this.tableData.splice(index, 1);
+                    this.tableData.splice(i, 1);
                 })
                 .catch(() => {});
         },

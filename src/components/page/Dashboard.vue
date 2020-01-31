@@ -113,8 +113,10 @@
             </el-table-column>
             <el-table-column width="60">
               <template v-slot="scope">
-                <i class="el-icon-edit"></i>
-                <i class="el-icon-delete"></i>
+                <router-link :to="{path:'editdataframe?id='+scope.row.id }">
+                  <i class="el-icon-edit"></i>
+                </router-link>
+                <i @click="deleteDataFrame(scope.row.id,scope.$index)" class="el-icon-delete"></i>
               </template>
             </el-table-column>
           </el-table>
@@ -160,6 +162,7 @@
 import Schart from "vue-schart";
 import bus from "../../utils/bus";
 import { getRequest } from "../../api/api.js";
+import { deleteRequest } from "../../api/api.js";
 export default {
   name: "dashboard",
   data() {
@@ -167,7 +170,7 @@ export default {
       // 从本地存储获取用户名
       userDetail: null,
       dataFrame: null,
-      avatar:null,
+      avatar: null,
       name: sessionStorage.getItem("ms_username"),
       // 待办事项卡片模拟数据
 
@@ -251,19 +254,42 @@ export default {
     bus.$off("collapse", this.handleBus);
   },
   methods: {
+    deleteDataFrame(dataid,i) {
+      console.log(i);
+      
+      this.$confirm("此操作将永久删除该数据集, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          deleteRequest("/dataframe?id=" + dataid);
+          this.dataFrame.splice(i, 1);
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+          
+          
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
     getUserInfo: function() {
       getRequest("/userInfo").then(resp => {
         var data = resp.data;
         this.userDetail = data.obj;
-        this.avatar = "/avatar/"+this.userDetail.id+".jpg";
+        this.avatar = "/avatar/" + this.userDetail.id + ".jpg";
       });
-      
     },
     getDataFrame: function() {
       getRequest("/dataframes").then(resp => {
         var data = resp.data;
         this.dataFrame = data.obj;
-        
       });
     },
     changeDate() {

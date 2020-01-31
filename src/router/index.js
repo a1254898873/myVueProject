@@ -107,6 +107,11 @@ export default new Router({
                     path: '/editprofile',
                     component: () => import('../components/page/EditProfile.vue'),
                     meta: { title: '头像' }
+                },
+                {
+                    path: '/editdataframe',
+                    component: () => import('../components/page/EditDataFrame.vue'),
+                    meta: { title: '修改数据集' }
                 }
                 
             ]
