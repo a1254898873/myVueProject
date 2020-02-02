@@ -116,7 +116,7 @@ export default new Router({
                 {
                     path: '/admin',
                     component: () => import('../components/page/Admin.vue'),
-                    meta: { title: '系统管理' }
+                    meta: { title: '系统管理', permission: true  }
                 }
                 
             ]

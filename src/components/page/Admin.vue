@@ -38,7 +38,38 @@
           ></el-pagination>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="项目管理" name="second">项目管理</el-tab-pane>
+      <el-tab-pane label="项目管理" name="second">
+        <el-table :data="dataFrames" border style="width: 100%">
+          <el-table-column prop="id" label="编号" width="100"></el-table-column>
+          <el-table-column prop="projectName" label="项目名" width="300"></el-table-column>
+          <el-table-column prop="createBy" label="作者" width="100"></el-table-column>
+     
+          <el-table-column label="操作" width="200">
+            <template v-slot="scope">
+              <router-link :to="{path:'editdataframe?id='+scope.row.id }">
+                <el-button type="text" icon="el-icon-edit">编辑</el-button>
+              </router-link>
+              <el-button
+                type="text"
+                icon="el-icon-delete"
+                class="red"
+                @click="deleteDataFrame(scope.row.id,scope.$index)"
+              >删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="pagination">
+          <el-pagination
+            @size-change="handleSizeChangeDataframe"
+            @current-change="handleCurrentChangeDataframe"
+            :current-page="user.curPage"
+            :page-sizes="[1, 2, 3, 4]"
+            :page-size="user.pageNumber"
+            layout="total,sizes,  prev, pager, next, jumper"
+            :total="user.totalAmount"
+          ></el-pagination>
+        </div>
+      </el-tab-pane>
       <el-tab-pane label="评论管理" name="third">评论管理</el-tab-pane>
       <el-tab-pane label="首页配置" name="fourth">首页配置</el-tab-pane>
     </el-tabs>
@@ -85,7 +116,15 @@ export default {
         pageNumber: 10,
         totalAmount: 10
       },
+      dataframe: {
+        cur_page: 1, //默认在第一页
+
+        pageNum: 10, //默认每页显示1条数据
+
+        totalCount: 10 //默认总条数为一条
+      },
       userList: [],
+      dataFrames: [],
       form: {
         id: "",
         username: "",
@@ -99,6 +138,62 @@ export default {
     };
   },
   methods: {
+    
+    deleteDataFrame(dataid, i) {
+      console.log(i);
+
+      this.$confirm("此操作将永久删除该数据集, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          deleteRequest("/dataframe?id=" + dataid);
+          this.dataFrames.splice(i, 1);
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    handleCurrentChangeDataframe(val) {
+      console.log(val);
+      this.dataframe.cur_page = val;
+      this.getDataFrame(); //获取用户点击的当前页后刷新页面数据
+    },
+    handleSizeChangeDataframe(val) {
+      console.log(val);
+      this.dataframe.pageNum = val;
+      this.getDataFrame(); //根据用户获取的每页显示页面数量显示页面
+    },
+    getTotal: function() {
+      getRequest(
+        "/page/total?page=" +
+          this.dataframe.cur_page +
+          "&size=" +
+          this.dataframe.pageNum
+      ).then(resp => {
+        var data = resp.data;
+        this.dataframe.totalCount = data.obj;
+      });
+    },
+    getDataFrame: function() {
+      getRequest(
+        "/page/dataframes?page=" +
+          this.dataframe.cur_page +
+          "&size=" +
+          this.dataframe.pageNum
+      ).then(resp => {
+        var data = resp.data;
+        this.dataFrames = data.obj;
+      });
+    },
     handleEdit(index, row) {
       this.idx = index;
       this.form.id = row.id;
@@ -168,6 +263,8 @@ export default {
   created() {
     this.getUserAmount();
     this.getUserList();
+    this.getTotal();
+    this.getDataFrame();
   }
 };
 </script>

@@ -231,7 +231,8 @@ export default {
   computed: {
     role() {
       // 利用三元表达式对用户登录后身份进行判定
-      return this.name === "AsunaCC" ? "超级管理员" : "普通用户";
+      
+      return this.name === "admin" ? "超级管理员" : "普通用户";
     }
   },
   // 在创建vue对象时，当html渲染之前就触发，只会触发一次；

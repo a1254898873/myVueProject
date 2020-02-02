@@ -52,6 +52,9 @@
             <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
               <el-dropdown-item>项目仓库</el-dropdown-item>
             </a>
+            <router-link to="/admin" v-if="username == 'admin'" >
+              <el-dropdown-item divided>管理页面</el-dropdown-item>
+            </router-link>
             <router-link to="/editprofile">
               <el-dropdown-item divided>修改个人资料</el-dropdown-item>
             </router-link>
@@ -75,7 +78,7 @@ export default {
     return {
       collapse: false,
       fullscreen: false,
-      name: "AsunaCC",
+      name: "admin",
       message: 2,
       searchValue: "",
       avatar: ""
