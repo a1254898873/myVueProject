@@ -112,6 +112,11 @@ export default new Router({
                     path: '/editdataframe',
                     component: () => import('../components/page/EditDataFrame.vue'),
                     meta: { title: '修改数据集' }
+                },
+                {
+                    path: '/admin',
+                    component: () => import('../components/page/Admin.vue'),
+                    meta: { title: '系统管理' }
                 }
                 
             ]
