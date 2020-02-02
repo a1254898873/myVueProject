@@ -15,7 +15,7 @@
             <span>{{item.projectName}}</span>
 
             <span style="float: right; padding: 3px 0" type="text">
-              <el-tag class="tagInfo" type="warning" >作者:{{item.createBy}}</el-tag>
+              <el-tag class="tagInfo" type="warning">作者:{{item.createBy}}</el-tag>
               <el-tag class="tagInfo">数据集协议:{{item.licence}}</el-tag>
               <el-tag class="tagInfo" type="success">创建时间:{{utc2beijing(item.createAt)}}</el-tag>
             </span>

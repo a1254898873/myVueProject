@@ -26,8 +26,8 @@ export default new Router({
                     meta: { title: '基础表格' }
                 },
                 {
-                    path: 'tabs',
-                    component: () => import('../components/page/Tabs.vue'),
+                    path: 'notice',
+                    component: () => import('../components/page/Notice.vue'),
                     meta: { title: 'tab选项卡' }
                 },
                 {

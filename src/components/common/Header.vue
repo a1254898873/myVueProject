@@ -27,7 +27,7 @@
         <div class="btn-bell">
           <!--  -->
           <el-tooltip effect="dark" :content="message?`有${message}条未读消息`:`消息中心`" placement="bottom">
-            <router-link to="/tabs">
+            <router-link to="/notice">
               <i class="el-icon-bell"></i>
             </router-link>
           </el-tooltip>
@@ -84,6 +84,12 @@ export default {
 
   // 监控自定义属性
   computed: {
+    getNoice: function() {
+      getRequest("/notifications/amount" ).then(resp => {
+        var data = resp.data;
+        this.message = data.obj;
+      });
+    },
     username() {
       // 从本地存储中获取值
       let username = sessionStorage.getItem("ms_username");
@@ -166,6 +172,7 @@ export default {
   },
   created() {
     this.getAvatar();
+    this.getNoice();
   }
 };
 </script>
