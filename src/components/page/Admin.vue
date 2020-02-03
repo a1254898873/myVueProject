@@ -43,7 +43,7 @@
           <el-table-column prop="id" label="编号" width="100"></el-table-column>
           <el-table-column prop="projectName" label="项目名" width="300"></el-table-column>
           <el-table-column prop="createBy" label="作者" width="100"></el-table-column>
-     
+
           <el-table-column label="操作" width="200">
             <template v-slot="scope">
               <router-link :to="{path:'editdataframe?id='+scope.row.id }">
@@ -70,8 +70,39 @@
           ></el-pagination>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="评论管理" name="third">评论管理</el-tab-pane>
-      <el-tab-pane label="首页配置" name="fourth">首页配置</el-tab-pane>
+      <el-tab-pane label="轮播设置" name="third">
+        <el-table :data="imgList" border style="width: 100%">
+          <el-table-column prop="id" label="编号" width="100"></el-table-column>
+          <el-table-column prop="name" label="名称" width="200"></el-table-column>
+          <el-table-column prop="url" label="链接" width="600"></el-table-column>
+
+          <el-table-column label="操作" width="200">
+            <template v-slot="scope">
+              <el-button
+                type="text"
+                icon="el-icon-delete"
+                class="red"
+                @click="deleteImg(scope.row.id,scope.$index)"
+              >删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>添加图片</span>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="addImg">添加</el-button>
+          </div>
+          <el-form ref="img" :model="img" label-width="80px">
+            <el-form-item label="名称">
+              <el-input v-model="img.name"></el-input>
+            </el-form-item>
+            <el-form-item label="链接">
+              <el-input v-model="img.url"></el-input>
+            </el-form-item>
+          </el-form>
+        </el-card>
+      </el-tab-pane>
     </el-tabs>
 
     <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
@@ -125,6 +156,7 @@ export default {
       },
       userList: [],
       dataFrames: [],
+      imgList: [],
       form: {
         id: "",
         username: "",
@@ -133,12 +165,52 @@ export default {
         phone: "",
         address: ""
       },
+      img: {
+        name: "",
+        url: ""
+      },
       idx: -1,
       editVisible: false
     };
   },
   methods: {
-    
+    addImg(){
+      postRequest("/carousel",this.img).then(resp => {
+        if (resp && resp.status == 200) {
+          this.getimg();
+           Message.success({ message: "添加成功!" });
+        }
+      });
+    },
+    deleteImg(dataid, i) {
+      console.log(i);
+
+      this.$confirm("此操作将永久删除该图片, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          deleteRequest("/carousel?id=" + dataid);
+          this.imgList.splice(i, 1);
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    getimg: function() {
+      getRequest("/carousel").then(resp => {
+        var data = resp.data;
+        this.imgList = data.obj;
+      });
+    },
     deleteDataFrame(dataid, i) {
       console.log(i);
 
@@ -265,11 +337,15 @@ export default {
     this.getUserList();
     this.getTotal();
     this.getDataFrame();
+    this.getimg();
   }
 };
 </script>
 <style scoped>
 .red {
   color: #ff0000;
+}
+.box-card{
+  margin: 10px;
 }
 </style>

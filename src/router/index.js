@@ -8,7 +8,7 @@ export default new Router({
     routes: [
         {
             path: '/',
-            redirect: '/dashboard'
+            redirect: '/index'
         },
         {
             path: '/',
@@ -16,9 +16,14 @@ export default new Router({
             meta: { title: '自述文件' },
             children: [
                 {
+                    path: '/index',
+                    component: () => import('../components/page/Index.vue'),
+                    meta: { title: '系统首页'  }
+                },
+                {
                     path: 'dashboard',
                     component: () => import('../components/page/Dashboard.vue'),
-                    meta: { title: '系统首页' }
+                    meta: { title: '个人首页' }
                 },
                 {
                     path: 'table',

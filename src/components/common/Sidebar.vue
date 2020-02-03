@@ -68,9 +68,14 @@ export default {
       items: [
         // 这些便是菜单的数据，目前并没有实现对应的功能，为了展示侧边栏的样式，提前模拟在这里。
         {
+          icon: "el-icon-s-flag",
+          index: "index",
+          title: "系统首页"
+        },
+        {
           icon: "el-icon-lx-home",
           index: "dashboard",
-          title: "系统首页"
+          title: "个人首页"
         },
         {
           icon: "el-icon-s-marketing",
