@@ -1,11 +1,12 @@
 <template>
+<el-container class=" background">
   <el-form ref="form" :model="form" label-width="80px" class="container" :rules="rules">
     <h3 class="register_title">系统注册</h3>
     <el-divider></el-divider>
     <el-form-item label="用户名" prop="username">
       <el-input v-model="form.username"></el-input>
     </el-form-item>
-    <el-form-item label="密码">
+    <el-form-item label="密码" prop="password">
       <el-input type="password" v-model="form.password"></el-input>
     </el-form-item>
     <el-form-item label="性别">
@@ -26,9 +27,10 @@
 
     <el-form-item>
       <el-button type="primary" @click="submitForm('form')">立即注册</el-button>
-      <el-button>取消</el-button>
+      <el-button @click="resetForm('form')">重置</el-button>
     </el-form-item>
   </el-form>
+  </el-container>
 </template>
 <script>
 import { postRequest } from "../../api/api.js";
@@ -47,12 +49,17 @@ export default {
       rules: {
         username: [
           { required: true, message: "请输入活动名称", trigger: "blur" }
-          
+        ],
+        password: [
+          { required: true, message: "请输入活动名称", trigger: "blur" }
         ]
       }
     };
   },
   methods: {
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -79,7 +86,7 @@ export default {
   margin: 90px auto;
   width: 350px;
   padding: 35px 35px 15px 35px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.6);
   border: 1px solid #eaeaea;
   box-shadow: 0 0 25px #cac6c6;
 }
@@ -87,5 +94,12 @@ export default {
   margin: 0px auto 40px auto;
   text-align: center;
   color: #505458;
+}
+.background {
+  position: relative;
+    width: 100%;
+    height: 100%;
+    background-image: url(../../assets/img/background.jpg);
+    background-size: 100%;
 }
 </style>

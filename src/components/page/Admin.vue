@@ -1,8 +1,12 @@
 <template>
   <div class="container">
+    <div class="title">
+      <h3>后台管理</h3>
+      <el-divider></el-divider>
+    </div>
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane label="用户管理" name="first">
-        <el-table :data="userList" border style="width: 100%">
+        <el-table :data="userList" border class="dataTable">
           <el-table-column prop="id" label="编号" width="100"></el-table-column>
           <el-table-column prop="username" label="用户名" width="150"></el-table-column>
           <el-table-column prop="gender" label="性别" width="100"></el-table-column>
@@ -39,7 +43,7 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="项目管理" name="second">
-        <el-table :data="dataFrames" border style="width: 100%">
+        <el-table :data="dataFrames" border class="dataTable">
           <el-table-column prop="id" label="编号" width="100"></el-table-column>
           <el-table-column prop="projectName" label="项目名" width="300"></el-table-column>
           <el-table-column prop="createBy" label="作者" width="100"></el-table-column>
@@ -71,7 +75,7 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="轮播设置" name="third">
-        <el-table :data="imgList" border style="width: 100%">
+        <el-table :data="imgList" border class="dataTable">
           <el-table-column prop="id" label="编号" width="100"></el-table-column>
           <el-table-column prop="name" label="名称" width="200"></el-table-column>
           <el-table-column prop="url" label="链接" width="600"></el-table-column>
@@ -104,7 +108,7 @@
         </el-card>
       </el-tab-pane>
       <el-tab-pane label="推荐列表" name="fourth">
-        <el-table :data="recommendList" border style="width: 100%">
+        <el-table border :data="recommendList" class="dataTable">
           <el-table-column prop="id" label="编号" width="100"></el-table-column>
           <el-table-column prop="did" label="项目编号" width="200"></el-table-column>
 
@@ -419,5 +423,14 @@ export default {
 }
 .box-card {
   margin: 10px;
+}
+.dataTable {
+  margin: auto;
+  width: fit-content;
+}
+.title h3 {
+  margin: 0px auto 40px auto;
+  text-align: center;
+  color: #505458;
 }
 </style>

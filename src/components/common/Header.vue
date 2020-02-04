@@ -49,10 +49,7 @@
           </span>
           <!-- slot设置下拉列表 -->
           <el-dropdown-menu slot="dropdown">
-            <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
-              <el-dropdown-item>项目仓库</el-dropdown-item>
-            </a>
-            <router-link to="/admin" v-if="username == 'admin'" >
+            <router-link to="/admin" v-if="username == 'admin'">
               <el-dropdown-item divided>管理页面</el-dropdown-item>
             </router-link>
             <router-link to="/editprofile">
@@ -88,7 +85,7 @@ export default {
   // 监控自定义属性
   computed: {
     getNoice: function() {
-      getRequest("/notifications/amount" ).then(resp => {
+      getRequest("/notifications/amount").then(resp => {
         var data = resp.data;
         this.message = data.obj;
       });

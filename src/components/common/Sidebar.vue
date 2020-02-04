@@ -83,79 +83,14 @@ export default {
           title: "公共数据集"
         },
         {
+          icon: "el-icon-upload",
+          index: "adddataframe",
+          title: "上传数据集"
+        },
+        {
           icon: "el-icon-lx-copy",
           index: "notice",
           title: "查看通知"
-        },
-        {
-          icon: "el-icon-lx-cascades",
-          index: "table",
-          title: "基础表格"
-        },
-        {
-          icon: "el-icon-pie-chart",
-          index: "charts",
-          title: "schart图表"
-        },
-        {
-          icon: "el-icon-rank",
-          index: "1",
-          title: "拖拽组件",
-          subs: [
-            {
-              index: "drag",
-              title: "拖拽列表"
-            },
-            {
-              index: "dialog",
-              title: "拖拽弹框"
-            }
-          ]
-        },
-        {
-          icon: "el-icon-folder",
-          index: "2",
-          title: "文件处理",
-          subs: [
-            {
-              index: "upload",
-              title: "文件上传"
-            },
-            {
-              index: "2-2",
-              title: "文本编辑器",
-              subs: [
-                {
-                  index: "editor",
-                  title: "富文本编辑器"
-                },
-                {
-                  index: "markdown",
-                  title: "markdown编辑器"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          icon: "el-icon-lx-global",
-          index: "i18n",
-          title: "国际化功能"
-        },
-        {
-          icon: "el-icon-lx-warn",
-          index: "7",
-          title: "错误处理",
-          subs: [
-            {
-              index: "permission",
-              title: "权限测试"
-            },
-            {
-              index: "404",
-              title: "404页面"
-            }
-          ]
         }
       ]
     };
