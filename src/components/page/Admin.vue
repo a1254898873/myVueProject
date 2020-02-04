@@ -103,6 +103,35 @@
           </el-form>
         </el-card>
       </el-tab-pane>
+      <el-tab-pane label="推荐列表" name="fourth">
+        <el-table :data="recommendList" border style="width: 100%">
+          <el-table-column prop="id" label="编号" width="100"></el-table-column>
+          <el-table-column prop="did" label="项目编号" width="200"></el-table-column>
+
+          <el-table-column label="操作" width="200">
+            <template v-slot="scope">
+              <el-button
+                type="text"
+                icon="el-icon-delete"
+                class="red"
+                @click="deleteRecommend(scope.row.id,scope.$index)"
+              >删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>添加图片</span>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="addRecommend">添加</el-button>
+          </div>
+          <el-form ref="recommend" :model="recommend" label-width="80px">
+            <el-form-item label="项目编号">
+              <el-input v-model="recommend.did"></el-input>
+            </el-form-item>
+          </el-form>
+        </el-card>
+      </el-tab-pane>
     </el-tabs>
 
     <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
@@ -157,6 +186,11 @@ export default {
       userList: [],
       dataFrames: [],
       imgList: [],
+      recommendList: [],
+      recommend: {
+        id: "",
+        did: ""
+      },
       form: {
         id: "",
         username: "",
@@ -174,11 +208,48 @@ export default {
     };
   },
   methods: {
-    addImg(){
-      postRequest("/carousel",this.img).then(resp => {
+    deleteRecommend(dataid, i) {
+      console.log(i);
+
+      this.$confirm("此操作将永久删除该推荐, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          deleteRequest("/recommend?id=" + dataid);
+          this.recommendList.splice(i, 1);
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    addRecommend() {
+      postRequest("/recommend", this.recommend).then(resp => {
+        if (resp && resp.status == 200) {
+          this.getRecommend();
+          Message.success({ message: "添加成功!" });
+        }
+      });
+    },
+    getRecommend() {
+      getRequest("/recommend").then(resp => {
+        var data = resp.data;
+        this.recommendList = data.obj;
+      });
+    },
+    addImg() {
+      postRequest("/carousel", this.img).then(resp => {
         if (resp && resp.status == 200) {
           this.getimg();
-           Message.success({ message: "添加成功!" });
+          Message.success({ message: "添加成功!" });
         }
       });
     },
@@ -338,6 +409,7 @@ export default {
     this.getTotal();
     this.getDataFrame();
     this.getimg();
+    this.getRecommend();
   }
 };
 </script>
@@ -345,7 +417,7 @@ export default {
 .red {
   color: #ff0000;
 }
-.box-card{
+.box-card {
   margin: 10px;
 }
 </style>
